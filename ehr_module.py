@@ -5,13 +5,16 @@ It analyzes both patient and lab information.
 """
 from datetime import datetime
 
+PATIENT_TYPE = dict[str, dict[str, str]]
 
-def parse_patient_file(patient_filename: str) -> dict[str, dict[str, str]]:
+
+def parse_patient_file(patient_filename: str) -> PATIENT_TYPE:
     """Parse through just the patient file."""
     patient_records = dict()
     patient_file = open(patient_filename)
     headers = patient_file.readline().strip().split("\t")
     data = patient_file.readlines()
+    patient_file.close()
 
     # Parse rows and get records for each patient
     for patient in data:
@@ -22,15 +25,18 @@ def parse_patient_file(patient_filename: str) -> dict[str, dict[str, str]]:
     return patient_records
 
 
-def parse_lab_file(lab_filename: str) -> dict[str, list[dict[str, str]]]:
+LAB_TYPE = dict[str, list[dict[str, str]]]
+
+
+def parse_lab_file(lab_filename: str) -> LAB_TYPE:
     """Parse through the patient file."""
     lab_records: dict[str, list[dict[str, str]]] = dict()
     lab_file = open(lab_filename)
     headers = lab_file.readline().strip().split("\t")
     data = lab_file.readlines()
+    lab_file.close()
 
     # Parse lab file and get individual lab records
-    # lab records is a dictionary to a list of dictionaries
     for lab in data:
         lab_data = lab.split("\t")
         patid = lab_data[0]
@@ -81,14 +87,17 @@ def patient_is_sick(
         if lab["LabName"] == lab_name:
             lab_value = lab["LabValue"]
             # seeing if the lab value matches the sickness criterion
-            if eval(lab_value + operator + str(value)):
-                return True
-
+            if operator == "<":
+                if float(lab_value) < value:
+                    return True
+            if operator == ">":
+                if float(lab_value) > value:
+                    return True
     return False
 
 
 def main() -> None:
-    """Do the thing."""
+    """Run the ehr-module."""
     patient_filename = "PatientCorePopulatedTable.txt"
     lab_filename = "LabsCorePopulatedTable.txt"
 
