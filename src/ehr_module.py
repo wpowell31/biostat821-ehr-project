@@ -102,6 +102,38 @@ def patient_is_sick(
     return False  # O(1)
 
 
+def patient_initial_age(
+    patient_records: dict[str, dict[str, str]],
+    lab_records: dict[str, list[dict[str, str]]],
+    patient_id: str,
+) -> int:
+    """Calculate patient age for initial lab record."""
+    # Getting Lab records for the patient
+    patient_lab_records = lab_records[patient_id]
+
+    # Finding the birthday for the patient
+    format = "%Y-%m-%d %H:%M:%S.%f"  # O(1)
+    patient_birthday_str = patient_records[patient_id]["PatientDateOfBirth"]
+    patient_birthday = datetime.strptime(patient_birthday_str, format)
+
+    # Initializing
+    min_date = datetime.now()
+    age = 0
+
+    # Parsing the lab records to find the lab record with the min date
+    for lab in patient_lab_records:
+        lab_date_str = lab["LabDateTime"]
+        lab_date = datetime.strptime(lab_date_str, format)
+
+        # Updating if this lab is the initial lab
+        if lab_date < min_date:
+            min_date = lab_date
+            delta = min_date - patient_birthday
+            age = int(delta.days / 365.2425)
+
+    return age
+
+
 def main() -> None:
     """Run the ehr-module."""
     patient_filename = "PatientCorePopulatedTable.txt"

@@ -29,6 +29,13 @@ The function patient_is_sick(records: DATA_TYPE, patient_id: str, lab_name: str,
 >> patient_is_sick(records, "1A8791E3-A61C-455A-8DEE-763EB90C9B2C", "METABOLIC: ALBUMIN", ">", 4.0)
 True
 
+Age at first admission
+The function patient_initial_age(patient_records: dict[str, dict[str, str]],lab_records: dict[str, list[dict[str, str]]],patient_id: str,) -> int: takes
+in the patient records, lab records, and patient id string and returns the age of that patient whenever their earliest lab was recorded. For example,
+
+>> patient_initial_age(patient_records, lab_records, "1A8791E3-A61C-455A-8DEE-763EB90C9B2C",)
+44
+
 # Contributor Instructions
 
 To test the data, run sets using the pytest library. To do so, navigate to the working directory and run pytest.

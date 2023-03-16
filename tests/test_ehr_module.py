@@ -2,6 +2,7 @@
 from ehr_module import parse_data
 from ehr_module import patient_is_sick
 from ehr_module import patient_age
+from ehr_module import patient_initial_age
 from fake_files import fake_files
 
 
@@ -120,4 +121,37 @@ def test_patient_is_sick() -> None:
         "URINALYSIS: RED BLOOD CELLS",
         ">",
         4.0,
+    )
+
+
+def test_patient_initial_age() -> None:
+    """Test patient_initial_age."""
+    patient_records = {
+        "1A8791E3-A61C-455A-8DEE-763EB90C9B2C": {
+            "PatientGender": "Male",
+            "PatientDateOfBirth": "1947-12-28 02:45:40.547",
+            "PatientRace": "Unknown",
+            "PatientMaritalStatus": "Married",
+            "PatientLanguage": "Icelandic",
+            "PatientPopulationPercentageBelowPoverty": "18.08",
+        }
+    }
+    lab_records = {
+        "1A8791E3-A61C-455A-8DEE-763EB90C9B2C": [
+            {
+                "AdmissionID": "1",
+                "LabName": "URINALYSIS: RED BLOOD CELLS",
+                "LabValue": "1.8",
+                "LabUnits": "rbc/hpf",
+                "LabDateTime": "1992-07-01 01:36:17.910",
+            }
+        ]
+    }
+    assert (
+        patient_initial_age(
+            patient_records,
+            lab_records,
+            "1A8791E3-A61C-455A-8DEE-763EB90C9B2C",
+        )
+        == 44
     )
