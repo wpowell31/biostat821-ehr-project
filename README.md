@@ -16,24 +16,32 @@ The module accepts data in the form of .txt files. The data are in the form of
 All input file should be tab sebarated, with string values not in quotes. For the Patient Demographic Data file, every entry is for a unique patient. For the Labratory Results file, the same patient can have multiple labs, and multiple labs for the same admission. The first line for both files should be a header that gives the column names for the fields in the file. An arbitrary number of headers can be supported, however typical column names for the patient demographic file are PatientID, PatientGender, PatientDateOfBirth, PatientRace, PatientMaritalStatus, PatientLanguage, and PatientPopulationPercentageBelowPoverty. For the labratory results file the typical headers are PatientID, AdmissionID, LabName, LabValue, LabUnits, and LabDateTime.
 
 ## API
-Old patients
-The function patient_age(records: DATA_TYPE, patient_id: str, age: float) -> int takes the data and returns the age in years of the given patient. For example,
+Data are stored in classes, with:
+    a Patient class with:
+    instance attributes for gender, DOB, race, poverty status, language, marital status, and labs.
 
->> patient_age(records, "1A8791E3-A61C-455A-8DEE-763EB90C9B2C")
+    a Lab class with:
+    instance attributes for name, value, units, admissionID, and date.
+
+Each instance of a patient class includes each lab stored in a list of lab classes.
+
+Old patients
+The function age(self) -> int: takes the data and returns the age in years of the given patient. For example,
+
+>> patient.age
 49
 
 
 Sick patients
-The function patient_is_sick(records: DATA_TYPE, patient_id: str, lab_name: str, operator: str, value: float) takes the data and returns a boolean indicating whether the patient has ever had a test with value above (">") or below ("<") the given level. For example,
+The method is_sick(self, lab_name: str, operator: str, value: float) -> bool: takes the data and returns a boolean indicating whether the patient has ever had a test with value above (">") or below ("<") the given level. For example,
 
->> patient_is_sick(records, "1A8791E3-A61C-455A-8DEE-763EB90C9B2C", "METABOLIC: ALBUMIN", ">", 4.0)
+>> patient.is_sick("METABOLIC: ALBUMIN", ">", 4.0)
 True
 
 Age at first admission
-The function patient_initial_age(patient_records: dict[str, dict[str, str]],lab_records: dict[str, list[dict[str, str]]],patient_id: str,) -> int: takes
-in the patient records, lab records, and patient id string and returns the age of that patient whenever their earliest lab was recorded. For example,
+The method initial_age(self) -> int: takes in the patient records, lab records, and patient id string and returns the age of that patient whenever their earliest lab was recorded. For example,
 
->> patient_initial_age(patient_records, lab_records, "1A8791E3-A61C-455A-8DEE-763EB90C9B2C",)
+>> patient.initial_age()
 44
 
 # Contributor Instructions
