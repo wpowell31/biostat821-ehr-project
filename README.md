@@ -16,12 +16,12 @@ The module accepts data in the form of .txt files. The data are in the form of
 All input file should be tab sebarated, with string values not in quotes. For the Patient Demographic Data file, every entry is for a unique patient. For the Labratory Results file, the same patient can have multiple labs, and multiple labs for the same admission. The first line for both files should be a header that gives the column names for the fields in the file. An arbitrary number of headers can be supported, however typical column names for the patient demographic file are PatientID, PatientGender, PatientDateOfBirth, PatientRace, PatientMaritalStatus, PatientLanguage, and PatientPopulationPercentageBelowPoverty. For the labratory results file the typical headers are PatientID, AdmissionID, LabName, LabValue, LabUnits, and LabDateTime.
 
 ## API
-Data are stored in classes, with:
+Data are stored in SQLite databases for patients and labs, established through a connection and cursor. Users can access the data with the following classes:
     a Patient class with:
-    instance attributes for gender, DOB, race, poverty status, language, marital status, and labs.
+    instance attributes for PatientID and Labs, and properties for PatientGender, PatientDateOfBirth, PatientRace, PatientMaritalStatus, PatientLanguage, and PatientPopulationPercentageBelowPoverty.
 
     a Lab class with:
-    instance attributes for name, value, units, admissionID, and date.
+    instance attributes for PatientID and a generated unique LabID, and properties for value, units, admissionID, and date.
 
 Each instance of a patient class includes each lab stored in a list of lab classes.
 
